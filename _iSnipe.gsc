@@ -151,12 +151,13 @@ isnipe_SendRule( message, duration )
 {
     if( !self.__vars["message"] )
     {
+        self.__vars["message"] = 1;
         self setLowerMessage( "rule", message, 5 );
         wait ( duration );
 	    self clearLowerMessage( "rule" );
+        self.__vars["message"] = 0;
     }   
 }
-
 isnipe_AntiKinfe()
 {
     self notifyOnPlayerCommand("melee","+melee_zoom");
