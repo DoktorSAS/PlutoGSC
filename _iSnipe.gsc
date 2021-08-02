@@ -58,8 +58,8 @@ CodeCallback_PlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath
 
         
      if( sMeansOfDeath == "MOD_MELEE")
-        iDamage = 0;
-    
+        
+    else
 	[[level.prevCallbackPlayerDamage]](eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, timeOffset);
 }
 
