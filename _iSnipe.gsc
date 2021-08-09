@@ -1,19 +1,10 @@
 #include common_scripts\utility;
 #include maps\mp\_utility;
 
-/*
-    mod: iSnipe
-    Developers: Diavolo & DoktorSAS
-    Last update: 02/08/2021
-
-    Features:
-        - Anti HardScope
-        - Sniper Damage
-        - Anti Fire Spam
-        - Custom notification on rule infraction 
-*/
 init()
 {	
+    if(getDvar("sv_gamemode") != "is")
+        return;
     create_dvar( "sv_antiHardScope", 1 );
 	level thread onPlayerConnect();
     level waittill("prematch_over");
@@ -30,10 +21,9 @@ isSniper( weapon )
         ||  isSubstr( weapon, "iw5_barrett_mp" ) 
         ||  isSubstr( weapon, "iw5_rsass_mp" ) 
         ||  isSubstr( weapon, "iw5_as50_mp" ) 
-        ||   isSubstr( weapon, "iw5_l96a1_mp") 
+        ||  isSubstr( weapon, "iw5_l96a1_mp")
+        ||  isSubstr( weapon, "iw5_cheytac_mp")
     );
-
-
 }
 
 CodeCallback_PlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, timeOffset)
@@ -55,11 +45,10 @@ CodeCallback_PlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath
     else 
         iDamage = 0;
 
-
         
      if( sMeansOfDeath == "MOD_MELEE")
-        
-    else
+        iDamage = 0;
+    
 	[[level.prevCallbackPlayerDamage]](eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, timeOffset);
 }
 
@@ -70,7 +59,6 @@ onPlayerConnect()
 	{
 		level waittill( "connected", player );
         player thread onPlayerSpawned();
-       
 	}
 }
 
@@ -113,7 +101,7 @@ isnipe_AntiHardScope()
         else
           adsCycles = 0;
 
-        if ( adsCycles >= 2.5)
+        if ( adsCycles >= 2)
         {
             self allowAds( false );
             self thread isnipe_SendRule("Hardscoping is ^1not allowed", 5);
@@ -158,6 +146,7 @@ isnipe_SendRule( message, duration )
         self.__vars["message"] = 0;
     }   
 }
+
 isnipe_AntiKinfe()
 {
     self notifyOnPlayerCommand("melee","+melee_zoom");
